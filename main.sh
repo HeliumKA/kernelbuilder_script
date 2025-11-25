@@ -89,6 +89,7 @@ ksu() {
             info "Adding..." 
             cd "$DIRPATH/ks"
             curl -LSs "https://raw.githubusercontent.com/WildKernels/Wild_KSU/wild/kernel/setup.sh" | bash -s wild
+            ;;
         6)
             info "Adding..." 
             cd "$DIRPATH/ks"
