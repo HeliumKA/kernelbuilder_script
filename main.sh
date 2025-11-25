@@ -233,6 +233,7 @@ build() {
 COMMIT="$(git rev-parse --short HEAD)"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 clear
+}
 
 # Banner
 $FIGLET "helium"
