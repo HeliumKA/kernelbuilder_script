@@ -242,6 +242,10 @@ tc() {
 
 }
 
+pull() {
+git pull origin main
+}
+
 clear
 # Banner
 $FIGLET "helium"
@@ -269,7 +273,7 @@ select opt in 'Pull latest commit' 'Clone latest kernel source' 'Add KernelSU' '
 do
     case "$opt" in
         'Clone latest kernel source' )   helium ;;
-        'Pull latest commit' )         git pull origin main ::
+        'Pull latest commit' )   pull ::
         'Add KernelSU' )   ksu ;;
         'Hook' )   hook ;;
         'Install dependencies' )   dependencies ;;
