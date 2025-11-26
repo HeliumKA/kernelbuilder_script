@@ -268,11 +268,11 @@ select opt in 'Clone Latest helium kernel source' 'Add KernelSU' 'Hook' 'Install
 do
     case "$opt" in
         'Clone latest helium kernel source' )   helium ;;
-        'Add KernelSU'  ksu ;;
-        'Hook'   hook ;;
-        'Install dependencies'  dependencies ;;
-        'Build'  build ;;
-        'Clone toolchains'    tc ;;
+        'Add KernelSU' )   ksu ;;
+        'Hook' )   hook ;;
+        'Install dependencies' )   dependencies ;;
+        'Build' )   build ;;
+        'Clone toolchains' )   tc ;;
         'Exit' ) exit
     esac
 done
