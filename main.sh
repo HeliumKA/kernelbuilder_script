@@ -186,14 +186,17 @@ dependencies() {
     mkdir -p "${HOME}/toolchains/clang-r383902b" && cd "${HOME}/toolchains/clang-r383902b"
     curl -LO "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/0e9e7035bf8ad42437c6156e5950eab13655b26c/clang-r383902b.tar.gz"
     tar -xf clang-r383902b.tar.gz && rm clang-r383902b.tar.gz
-    cd "${KERNEL_ROOT}"
+    cd "$DIRPATH"
     
     echo -e "\n[INFO] Cloning ARM GNU Toolchain\n"
     mkdir -p "${HOME}/toolchains/gcc" && cd "${HOME}/toolchains/gcc"
     curl -LO "https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz"
     tar -xf arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
-    cd "${KERNEL_ROOT}"
+    cd "$DIRPATH"
+    esac
+}
 
+build() {
 export PATH="${HOME}/toolchains/clang-r383902b/bin:${PATH}"
 export LD_LIBRARY_PATH="${HOME}/toolchains/clang-r383902b/lib:${HOME}/toolchains/clang-r383902b/lib64:${LD_LIBRARY_PATH}"
 
@@ -210,10 +213,7 @@ export BUILD_OPTIONS=(
     CC="${BUILD_CC}"
     CLANG_TRIPLE=aarch64-linux-gnu-
 )
-    esac
-}
 
-build() {
 "$KERNEL_ROOT"="$DIRPATH/ks"
     info "BUILD STARTED...!"
     echo "Use NO KernelSU defconfig as default! If u want to change, please kill script and change it."
@@ -231,6 +231,27 @@ build() {
 COMMIT="$(git rev-parse --short HEAD)"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 clear
+}
+
+tc() {
+    echo -e "\n[INFO] Cloning clang-r383902b...\n"
+    mkdir -p "${HOME}/toolchains/clang-r383902b" && cd "${HOME}/toolchains/clang-r383902b"
+    curl -LO "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/0e9e7035bf8ad42437c6156e5950eab13655b26c/clang-r383902b.tar.gz"
+    tar -xf clang-r383902b.tar.gz && rm clang-r383902b.tar.gz
+    cd "$DIRPATH"
+    
+    echo -e "\n[INFO] Cloning ARM GNU Toolchain\n"
+    mkdir -p "${HOME}/toolchains/gcc" && cd "${HOME}/toolchains/gcc"
+    curl -LO "https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz"
+    tar -xf arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+    cd "$DIRPATH"
+
+    export PATH="${HOME}/toolchains/clang-r383902b/bin:${PATH}"
+    export LD_LIBRARY_PATH="${HOME}/toolchains/clang-r383902b/lib:${HOME}/toolchains/clang-r383902b/lib64:${LD_LIBRARY_PATH}"
+
+    export BUILD_CROSS_COMPILE="${HOME}/toolchains/gcc/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-"
+    export BUILD_CC="${HOME}/toolchains/clang-r383902b/bin/clang"
+
 }
 
 # Banner
@@ -255,7 +276,7 @@ fi
 
 # Main functions
 PS3='Please select options to continue : '
-select opt in 'Clone Latest helium kernel source' 'Add KernelSU' 'Hook' 'Install dependencies' 'Exit'
+select opt in 'Clone Latest helium kernel source' 'Add KernelSU' 'Hook' 'Install dependencies' 'Clone toolchains' 'Exit'
 do
     case "$opt" in
         'Clone latest helium kernel source' )   helium ;;
@@ -263,6 +284,7 @@ do
         'Hook'   hook ;;
         'Install dependencies'  dependencies ;;
         'Build'  build ;;
+        'Clone toolchains'    tc ;;
         'Exit' ) exit
     esac
 done
