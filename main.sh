@@ -188,6 +188,8 @@ dependencies() {
 }
 
 build() {
+cd "$DIRPATH/ks"
+
 export PATH="${HOME}/toolchains/clang-r383902b/bin:${PATH}"
 export LD_LIBRARY_PATH="${HOME}/toolchains/clang-r383902b/lib:${HOME}/toolchains/clang-r383902b/lib64:${LD_LIBRARY_PATH}"
 
@@ -208,7 +210,6 @@ export BUILD_OPTIONS=(
 "$KERNEL_ROOT"="$DIRPATH/ks"
     info "BUILD STARTED...!"
     echo "Use NO KernelSU defconfig as default! If u want to change, please kill script and change it."
-    cd "$DIRPATH/ks"
     make "${BUILD_OPTIONS[@]}" a32_noksu_defconfig
     echo "Executing the menu config..."
     make "${BUILD_OPTIONS[@]}" menuconfig
